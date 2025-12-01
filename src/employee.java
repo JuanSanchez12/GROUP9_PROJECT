@@ -7,6 +7,7 @@ public class Employee {
     private String division;
     private double salary;
 
+    // Constructor
     public Employee(int empId, String name, String ssn, String jobTitle, String division, double salary) {
         this.empId = empId;
         this.name = name;
@@ -16,6 +17,7 @@ public class Employee {
         this.salary = salary;
     }
 
+    // Getters
     public int getEmpID() {
         return empId;
     }
@@ -40,6 +42,7 @@ public class Employee {
         return salary;
     }
 
+    // Setters
     public void setEmpID(int empId) {
         this.empId = empId;
     }
