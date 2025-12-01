@@ -12,18 +12,22 @@ public class ReportGenerator {
 
     public void generateFullEmployeePayReport(String keyword) {
 
+        //Looks up employee
         Employee emp = dbOps.getEmployeeByKeyword(keyword);
 
         if (emp == null) {
-            System.out.println("Employee not found.");
+            System.out.println("=============================================================");
+            System.out.println("                     EMPLOYEE NOT FOUND");
+            System.out.println("=============================================================\n");
             return;
         }
 
+        //Calculations handled by Payroll class
         double annualSalary = emp.getSalary();
-        double monthlyGross = annualSalary / 12;
-        double tax = calculateMonthlyTax(monthlyGross);
-        double other = monthlyGross * 0.05;
-        double monthlyNet = monthlyGross - tax - other;
+        double monthlyGross = payroll.getMonthlyGross(emp);
+        double tax = payroll.calculateMonthlyTax(emp);
+        double other = payroll.calculateOtherDeductions(emp);
+        double monthlyNet = payroll.getMonthlyNet(emp);
 
         System.out.println("=============================================================");
         System.out.println("                 FULL EMPLOYEE PAY REPORT");
@@ -42,15 +46,12 @@ public class ReportGenerator {
         System.out.println("=============================================================\n");
     }
 
-    private double calculateMonthlyTax(double monthlySalary) {
-        double annual = monthlySalary * 12;
-        if (annual <= 50000) return annual * 0.10 / 12;
-        else if (annual <= 100000) return annual * 0.20 / 12;
-        else return annual * 0.30 / 12;
-    }
-
     public void generateJobTitleSalaryReport() {
+
+        //All employees
         List<Employee> employees = dbOps.getAllEmployees();
+
+        //Group by job title
         Map<String, List<Employee>> grouped = new HashMap<>();
 
         for (Employee emp : employees) {
@@ -62,8 +63,11 @@ public class ReportGenerator {
         System.out.println("=============================================================");
 
         for (String title : grouped.keySet()) {
+
             List<Employee> list = grouped.get(title);
-            double avg = list.stream().mapToDouble(e -> e.getSalary() / 12).average().orElse(0);
+
+            //Average monthly salary handled by Payroll
+            double avg = payroll.getAverageMonthlySalary(list);
 
             System.out.printf("\nJob Title: %s%n", title);
             System.out.printf("Average Monthly Pay: $%.2f%n", avg);
@@ -78,7 +82,11 @@ public class ReportGenerator {
     }
 
     public void generateDivisionSalaryReport() {
+
+        //All employees
         List<Employee> employees = dbOps.getAllEmployees();
+
+        //Group by division
         Map<String, List<Employee>> grouped = new HashMap<>();
 
         for (Employee emp : employees) {
@@ -90,8 +98,11 @@ public class ReportGenerator {
         System.out.println("=============================================================");
 
         for (String division : grouped.keySet()) {
+
             List<Employee> list = grouped.get(division);
-            double avg = list.stream().mapToDouble(e -> e.getSalary() / 12).average().orElse(0);
+
+            //Average monthly salary computed by Payroll
+            double avg = payroll.getAverageMonthlySalary(list);
 
             System.out.printf("\nDivision: %s%n", division);
             System.out.printf("Average Monthly Pay: $%.2f%n", avg);

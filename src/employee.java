@@ -7,13 +7,38 @@ public class Employee {
     private String division;
     private double salary;
 
-    // Constructor
+    //Constructor
     public Employee(int empId, String name, String ssn, String jobTitle, String division, double salary) {
         this.empId = empId;
         this.name = name;
         this.ssn = ssn;
         this.jobTitle = jobTitle;
         this.division = division;
+        this.salary = salary;
+    }
+
+    //Setters
+    public void setEmpID(int empId) {
+        this.empId = empId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSSN(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 
@@ -40,31 +65,6 @@ public class Employee {
 
     public double getSalary() {
         return salary;
-    }
-
-    // Setters
-    public void setEmpID(int empId) {
-        this.empId = empId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSSN(String ssn) {
-        this.ssn = ssn;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public void setDivision(String division) {
-        this.division = division;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
     }
 
     @Override
