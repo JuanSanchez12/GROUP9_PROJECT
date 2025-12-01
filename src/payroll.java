@@ -6,42 +6,28 @@ public class Payroll {
         this.dbOps = dbOps;
     }
 
-    // Example: calculate net salary for one employee
-    public double calculateNetSalary(int empId) {
-        Employee emp = dbOps.getEmployeeById(empId);  // Daniel’s part
+    // Calculate monthly net salary using name, SSN, or ID
+    public double calculateNetSalary(String keyword) {
+        Employee emp = dbOps.getEmployeeByKeyword(keyword);
+
         if (emp == null) {
-            throw new IllegalArgumentException("Employee not found: " + empId);
+            throw new IllegalArgumentException("Employee not found for: " + keyword);
         }
 
-        double baseSalary = emp.getSalary();
-        double tax = calculateTax(baseSalary);
-        double otherDeductions = calculateOtherDeductions(baseSalary);
+        double annualSalary = emp.getSalary();
+        double grossMonthly = annualSalary / 12;
+        double tax = calculateTax(grossMonthly);
+        double otherDeductions = grossMonthly * 0.05;
 
-        return baseSalary - tax - otherDeductions;
+        return grossMonthly - tax - otherDeductions;
     }
 
-    private double calculateTax(double salary) {
-        // placeholder logic – you can agree rules with the team
-        if (salary <= 50000) return salary * 0.10;
-        else if (salary <= 100000) return salary * 0.20;
-        else return salary * 0.30;
-    }
+    // Calculate tax per month based on tax brackets
+    private double calculateTax(double monthlySalary) {
+        double annual = monthlySalary * 12;
 
-    private double calculateOtherDeductions(double salary) {
-        // e.g., benefits, insurance, etc. You can keep simple if project is small
-        return salary * 0.05;
-    }
-
-    // maybe a method to generate payroll for ALL employees
-    public Map<Employee, Double> generatePayrollForAllEmployees() {
-        List<Employee> employees = dbOps.getAllEmployees();
-        Map<Employee, Double> payroll = new HashMap<>();
-
-        for (Employee emp : employees) {
-            double net = calculateNetSalary(emp.getEmpId());
-            payroll.put(emp, net);
-        }
-
-        return payroll;
+        if (annual <= 50000) return annual * 0.10 / 12;
+        else if (annual <= 100000) return annual * 0.20 / 12;
+        else return annual * 0.30 / 12;
     }
 }

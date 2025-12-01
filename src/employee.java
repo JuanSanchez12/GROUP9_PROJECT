@@ -1,4 +1,4 @@
-public class employee {
+public class Employee {
 
     private int empId;
     private String name;
@@ -7,8 +7,7 @@ public class employee {
     private String division;
     private double salary;
 
-    // Constructor
-    public employee(int empId, String name, String ssn, String jobTitle, String division, double salary) {
+    public Employee(int empId, String name, String ssn, String jobTitle, String division, double salary) {
         this.empId = empId;
         this.name = name;
         this.ssn = ssn;
@@ -17,7 +16,6 @@ public class employee {
         this.salary = salary;
     }
 
-    // Getters
     public int getEmpID() {
         return empId;
     }
@@ -42,7 +40,6 @@ public class employee {
         return salary;
     }
 
-    // Setters
     public void setEmpID(int empId) {
         this.empId = empId;
     }

@@ -1,24 +1,40 @@
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-public class overallSystem {
+public class OverallSystem {
 
-    Scanner sc = new Scanner(System.in);
-    private databaseOperations dbOps = new databaseOperations();
+    private Scanner sc = new Scanner(System.in);
+    private DatabaseOperations dbOps = new DatabaseOperations();
+    private ReportGenerator report = new ReportGenerator(dbOps);
 
     public void searchEmployee() {
-        System.out.print("Enter name, SSN, or Employee ID to search: ");
+        System.out.print("Enter name, SSN, or Employee ID: ");
         String keyword = sc.nextLine();
 
-        List<employee> results = dbOps.searchEmployee(keyword);
+        Employee emp = dbOps.getEmployeeByKeyword(keyword);
 
-        if (results.isEmpty()) {
-            System.out.println("No employee found.");
-        } else {
-            System.out.println("Search Results:");
-            for (employee emp : results) {
-                System.out.println(emp.toString());
-            }
+        if (emp == null) {
+            System.out.println("Employee not found.");
+            return;
         }
+
+        System.out.println("=============================================================");
+        System.out.println("                    EMPLOYEE SEARCH RESULT");
+        System.out.println("=============================================================");
+        System.out.println("Employee ID: " + emp.getEmpID());
+        System.out.println("Name:        " + emp.getName());
+        System.out.println("SSN:         " + emp.getSSN());
+        System.out.println("Job Title:   " + emp.getJobTitle());
+        System.out.println("Division:    " + emp.getDivision());
+        System.out.println("Salary:      $" + String.format("%.2f", emp.getSalary()));
+        System.out.println("=============================================================\n");
+    }
+
+    public void generateFullEmployeePayReport(String keyword) {
+        report.generateFullEmployeePayReport(keyword);
+    }
+
+    public void generateMonthlyPayrollReport() {
+        report.generateJobTitleSalaryReport();
+        report.generateDivisionSalaryReport();
     }
 }
